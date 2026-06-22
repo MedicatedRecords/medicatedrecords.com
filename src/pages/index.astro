@@ -1,0 +1,35 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import FeaturedBanner from '../components/FeaturedBanner.astro';
+import ContentGrid from '../components/ContentGrid.astro';
+import { getFeatured } from '../lib/featured';
+import { getFeed } from '../lib/feed';
+
+const featured = await getFeatured();
+const feed = await getFeed();
+---
+
+<BaseLayout>
+  <!-- Featured hierarchy: 1 hero + 2 sub-banners. No carousel. -->
+  <section aria-labelledby="featured-heading" class="mx-auto max-w-6xl px-5 pt-8">
+    <h1 id="featured-heading" class="sr-only">Featured</h1>
+    <div class="flex flex-col gap-4">
+      <FeaturedBanner item={featured.hero} variant="hero" />
+      <div class="grid gap-4 sm:grid-cols-2">
+        <FeaturedBanner item={featured.subBanners[0]} variant="sub" />
+        <FeaturedBanner item={featured.subBanners[1]} variant="sub" />
+      </div>
+    </div>
+  </section>
+
+  <!-- Mixed-content chronological grid. -->
+  <section aria-labelledby="latest-heading" class="mx-auto max-w-6xl px-5 pt-16">
+    <h2
+      id="latest-heading"
+      class="mb-6 font-mono text-xs uppercase tracking-widest text-muted"
+    >
+      Latest
+    </h2>
+    <ContentGrid items={feed} />
+  </section>
+</BaseLayout>

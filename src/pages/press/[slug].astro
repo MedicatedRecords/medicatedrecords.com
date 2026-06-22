@@ -1,0 +1,68 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+export async function getStaticPaths() {
+  const pressKits = await getCollection('pressKits');
+  return pressKits.map((kit) => ({
+    params: { slug: kit.id },
+    props: { kit },
+  }));
+}
+
+const { kit } = Astro.props;
+const { Content } = await render(kit);
+---
+
+<BaseLayout title={kit.data.title} description={`Press kit — ${kit.data.title}.`}>
+  <article class="mx-auto max-w-3xl px-5 pt-8">
+    <header>
+      <p class="eyebrow mb-2">Press Kit</p>
+      <h1 class="text-3xl font-medium tracking-tight sm:text-4xl">
+        {kit.data.title}
+      </h1>
+    </header>
+
+    <div class="prose-invert mt-6 max-w-prose leading-relaxed text-fg/90">
+      <Content />
+    </div>
+
+    {
+      kit.data.assets.length > 0 && (
+        <section class="mt-10">
+          <h2 class="mb-3 font-mono text-xs uppercase tracking-widest text-muted">
+            Downloads
+          </h2>
+          <ul class="divide-y divide-line border-y border-line" role="list">
+            {kit.data.assets.map((asset) => (
+              <li class="flex items-center justify-between gap-4 py-3">
+                <span>{asset.label}</span>
+                <a
+                  href={asset.file}
+                  download
+                  class="shrink-0 border border-line px-3 py-1.5 font-mono text-xs uppercase tracking-widest text-muted transition-colors hover:border-fg hover:text-fg"
+                >
+                  {asset.type} ↓
+                </a>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )
+    }
+
+    {
+      kit.data.contactEmail && (
+        <p class="mt-8 font-mono text-xs uppercase tracking-widest text-muted">
+          Contact:{' '}
+          <a
+            href={`mailto:${kit.data.contactEmail}`}
+            class="underline-offset-4 hover:text-fg hover:underline"
+          >
+            {kit.data.contactEmail}
+          </a>
+        </p>
+      )
+    }
+  </article>
+</BaseLayout>

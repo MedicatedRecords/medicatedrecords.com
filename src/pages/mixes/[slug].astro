@@ -1,0 +1,57 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ArtistCredits from '../../components/ArtistCredits.astro';
+import SoundCloudPlayer from '../../components/SoundCloudPlayer.astro';
+import { formatDate } from '../../lib/format';
+
+export async function getStaticPaths() {
+  const mixes = await getCollection('mixes');
+  return mixes.map((mix) => ({
+    params: { slug: mix.id },
+    props: { mix },
+  }));
+}
+
+const { mix } = Astro.props;
+const { Content } = await render(mix);
+---
+
+<BaseLayout title={mix.data.title} description={`${mix.data.title} — Medicated Radio.`}>
+  <article class="mx-auto max-w-3xl px-5 pt-8">
+    <header>
+      <p class="eyebrow mb-2">
+        Mix{mix.data.episodeNumber !== undefined && <> · Episode {mix.data.episodeNumber}</>}
+      </p>
+      <h1 class="text-3xl font-medium tracking-tight sm:text-4xl">
+        {mix.data.title}
+      </h1>
+      <div class="mt-2">
+        <ArtistCredits artists={mix.data.artists} />
+      </div>
+      <p class="mt-2 font-mono text-xs uppercase tracking-widest text-muted">
+        {formatDate(mix.data.date)}
+        {mix.data.duration && <> · {mix.data.duration}</>}
+      </p>
+    </header>
+
+    <div class="mt-6">
+      <SoundCloudPlayer trackId={mix.data.soundcloudTrackId} title={mix.data.title} />
+    </div>
+
+    <p class="mt-3 font-mono text-xs uppercase tracking-widest">
+      <a
+        href={mix.data.soundcloudUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="text-muted underline-offset-4 hover:text-fg hover:underline"
+      >
+        Listen on SoundCloud ↗
+      </a>
+    </p>
+
+    <div class="prose-invert mt-8 max-w-prose leading-relaxed text-fg/90">
+      <Content />
+    </div>
+  </article>
+</BaseLayout>

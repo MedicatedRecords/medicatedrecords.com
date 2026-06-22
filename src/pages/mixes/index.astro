@@ -1,0 +1,61 @@
+---
+import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHeader from '../../components/PageHeader.astro';
+import ArtistCredits from '../../components/ArtistCredits.astro';
+import { formatDate } from '../../lib/format';
+
+const visible = (e: { data: { draft: boolean } }) =>
+  import.meta.env.DEV || !e.data.draft;
+
+const mixes = (await getCollection('mixes', visible)).sort(
+  (a, b) => b.data.date.getTime() - a.data.date.getTime()
+);
+---
+
+<BaseLayout title="Mixes" description="Medicated Radio — the label's DJ mix series.">
+  <PageHeader
+    eyebrow="Medicated Radio"
+    title="Mixes"
+    description="The label's ongoing DJ mix series, featuring our artists."
+  />
+
+  <div class="mx-auto max-w-6xl px-5">
+    <ul class="grid gap-x-4 gap-y-8 sm:grid-cols-2 lg:grid-cols-3" role="list">
+      {
+        mixes.map((mix) => (
+          <li>
+            <a href={`/mixes/${mix.id}`} class="group block focus-visible:outline-none">
+              <div class="relative overflow-hidden bg-surface">
+                <Image
+                  src={mix.data.squareImage}
+                  alt={mix.data.squareImageAlt}
+                  width={640}
+                  height={640}
+                  widths={[320, 480, 640]}
+                  sizes="(min-width: 1024px) 33vw, 50vw"
+                  class="aspect-square w-full object-cover transition-transform duration-500 group-hover:scale-105 group-focus-visible:scale-105"
+                />
+                {mix.data.episodeNumber !== undefined && (
+                  <span class="absolute left-2 top-2 bg-bg/80 px-2 py-1 font-mono text-[0.6rem] uppercase tracking-widest text-fg backdrop-blur-sm">
+                    Ep. {mix.data.episodeNumber}
+                  </span>
+                )}
+              </div>
+              <h2 class="mt-3 font-medium group-hover:underline group-focus-visible:underline">
+                {mix.data.title}
+              </h2>
+            </a>
+            <div class="mt-1">
+              <ArtistCredits artists={mix.data.artists} />
+            </div>
+            <p class="mt-1 font-mono text-xs uppercase tracking-widest text-muted">
+              {formatDate(mix.data.date)}
+            </p>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</BaseLayout>

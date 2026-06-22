@@ -1,0 +1,87 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHeader from '../../components/PageHeader.astro';
+import ArtistCredits from '../../components/ArtistCredits.astro';
+import { formatDate } from '../../lib/format';
+
+const visible = (e: { data: { draft: boolean } }) =>
+  import.meta.env.DEV || !e.data.draft;
+
+const all = await getCollection('events', visible);
+const now = new Date();
+
+const upcoming = all
+  .filter((e) => (e.data.endDate ?? e.data.startDate) >= now)
+  .sort((a, b) => a.data.startDate.getTime() - b.data.startDate.getTime());
+
+const past = all
+  .filter((e) => (e.data.endDate ?? e.data.startDate) < now)
+  .sort((a, b) => b.data.startDate.getTime() - a.data.startDate.getTime());
+---
+
+<BaseLayout title="Events">
+  <PageHeader eyebrow="Live" title="Events" />
+
+  <div class="mx-auto max-w-4xl px-5">
+    {
+      upcoming.length === 0 && past.length === 0 && (
+        <p class="text-muted">No events announced yet — check back soon.</p>
+      )
+    }
+
+    {
+      upcoming.length > 0 && (
+        <section>
+          <h2 class="mb-4 font-mono text-xs uppercase tracking-widest text-muted">
+            Upcoming
+          </h2>
+          <ul class="divide-y divide-line border-y border-line" role="list">
+            {upcoming.map((event) => (
+              <li class="py-5">
+                <a href={`/events/${event.id}`} class="group block">
+                  <p class="font-mono text-xs uppercase tracking-widest text-muted">
+                    {formatDate(event.data.startDate)}
+                  </p>
+                  <h3 class="mt-1 text-lg font-medium group-hover:underline">
+                    {event.data.title}
+                  </h3>
+                  <p class="text-muted">
+                    {event.data.venue}, {event.data.city}
+                  </p>
+                </a>
+                <div class="mt-1">
+                  <ArtistCredits artists={event.data.artists} />
+                </div>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )
+    }
+
+    {
+      past.length > 0 && (
+        <section class="mt-12">
+          <h2 class="mb-4 font-mono text-xs uppercase tracking-widest text-muted">
+            Past
+          </h2>
+          <ul class="divide-y divide-line border-y border-line" role="list">
+            {past.map((event) => (
+              <li class="py-4">
+                <a href={`/events/${event.id}`} class="group block text-muted">
+                  <span class="font-mono text-xs uppercase tracking-widest">
+                    {formatDate(event.data.startDate)}
+                  </span>
+                  <span class="ml-3 group-hover:text-fg group-hover:underline">
+                    {event.data.title} — {event.data.city}
+                  </span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )
+    }
+  </div>
+</BaseLayout>
