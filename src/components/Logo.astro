@@ -1,0 +1,47 @@
+---
+/**
+ * Line-art circular sun formed from empty space on a grid of horizontal lines.
+ * The disc is "negative space" — horizontal lines are masked away inside the
+ * circle, leaving a thin ring. Retro, minimal, monochrome (uses currentColor).
+ */
+interface Props {
+  size?: number;
+  class?: string;
+}
+
+const { size = 40, class: className = '' } = Astro.props;
+const id = `sun-${Math.random().toString(36).slice(2, 8)}`;
+
+// Horizontal grid lines.
+const lineCount = 9;
+const lines = Array.from({ length: lineCount }, (_, i) =>
+  Math.round(((i + 1) / (lineCount + 1)) * 40)
+);
+---
+
+<svg
+  class={className}
+  width={size}
+  height={size}
+  viewBox="0 0 40 40"
+  fill="none"
+  role="img"
+  aria-label="Medicated Records"
+  xmlns="http://www.w3.org/2000/svg"
+>
+  <defs>
+    <mask id={id}>
+      <rect width="40" height="40" fill="white" />
+      <!-- Knock out the disc so the lines stop at the sun's edge. -->
+      <circle cx="20" cy="20" r="11" fill="black" />
+    </mask>
+  </defs>
+
+  <g stroke="currentColor" stroke-width="1.4" stroke-linecap="round">
+    <g mask={`url(#${id})`}>
+      {lines.map((y) => <line x1="1" y1={y} x2="39" y2={y} />)}
+    </g>
+    <!-- Thin ring outlines the negative-space sun. -->
+    <circle cx="20" cy="20" r="11" stroke-width="1.4" />
+  </g>
+</svg>

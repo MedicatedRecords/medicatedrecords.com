@@ -1,0 +1,34 @@
+---
+const year = new Date().getFullYear();
+
+const social = [
+  { label: 'SoundCloud', href: 'https://soundcloud.com/medicatedradio' },
+  { label: 'Instagram', href: 'https://www.instagram.com/medicatedradio' },
+];
+---
+
+<footer class="mt-24 border-t border-line">
+  <div
+    class="mx-auto flex max-w-6xl flex-col gap-4 px-5 py-10 sm:flex-row sm:items-center sm:justify-between"
+  >
+    <p class="text-xs uppercase tracking-widest text-muted">
+      © {year} Medicated Records
+    </p>
+    <ul class="flex gap-5 text-xs uppercase tracking-widest">
+      {
+        social.map((item) => (
+          <li>
+            <a
+              href={item.href}
+              class="text-muted transition-colors hover:text-fg"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {item.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</footer>

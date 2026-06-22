@@ -1,0 +1,52 @@
+---
+const nav = [
+  { label: 'Artists', href: '/artists' },
+  { label: 'Releases', href: '/releases' },
+  { label: 'Mixes', href: '/mixes' },
+  { label: 'Events', href: '/events' },
+  { label: 'Press', href: '/press' },
+];
+
+const { pathname } = Astro.url;
+const isActive = (href: string) =>
+  pathname === href || pathname.startsWith(`${href}/`);
+---
+
+<header
+  class="border-b border-line bg-bg/85 backdrop-blur-sm sm:sticky sm:top-0 sm:z-40"
+>
+  <div
+    class="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-4 px-5 py-4"
+  >
+    <a href="/" class="flex items-center">
+      <img
+        src="/medicated_records_logo.svg"
+        alt="Medicated Records"
+        width="548"
+        height="64"
+        class="h-7 w-auto sm:h-8"
+      />
+    </a>
+
+    <nav aria-label="Primary">
+      <ul class="flex flex-wrap items-center gap-x-5 gap-y-2 font-mono text-xs uppercase tracking-widest">
+        {
+          nav.map((item) => (
+            <li>
+              <a
+                href={item.href}
+                aria-current={isActive(item.href) ? 'page' : undefined}
+                class:list={[
+                  'inline-block py-1 transition-colors hover:text-fg',
+                  isActive(item.href) ? 'text-fg' : 'text-muted',
+                ]}
+              >
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+  </div>
+</header>

@@ -1,0 +1,37 @@
+---
+/**
+ * SoundCloud embed built from a numeric track ID. Reserved fallback: when
+ * self-hosted audio replaces SoundCloud, swap this component for an <audio> tag.
+ */
+interface Props {
+  trackId: string;
+  title: string;
+  /** Player accent color (SoundCloud UI only, not site chrome). */
+  color?: string;
+}
+
+const { trackId, title, color = '712ec8' } = Astro.props;
+
+const params = new URLSearchParams({
+  url: `https://api.soundcloud.com/tracks/${trackId}`,
+  color: `#${color}`,
+  auto_play: 'false',
+  hide_related: 'false',
+  show_comments: 'true',
+  show_user: 'true',
+  show_reposts: 'false',
+  show_teaser: 'true',
+  visual: 'true',
+});
+
+const src = `https://w.soundcloud.com/player/?${params.toString()}`;
+---
+
+<iframe
+  title={`SoundCloud player — ${title}`}
+  width="100%"
+  height="300"
+  loading="lazy"
+  allow="autoplay; encrypted-media"
+  style="border: 0;"
+  src={src}></iframe>

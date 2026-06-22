@@ -1,0 +1,52 @@
+---
+import { Image } from 'astro:assets';
+import type { FeaturedItem } from '../lib/featured';
+
+interface Props {
+  item: FeaturedItem;
+  /** `hero` is the large top banner; `sub` are the two smaller banners below. */
+  variant?: 'hero' | 'sub';
+}
+
+const { item, variant = 'sub' } = Astro.props;
+const isHero = variant === 'hero';
+
+// Hero spans full width; sub-banners sit two-up, so each is roughly half.
+const width = isHero ? 1600 : 800;
+const widths = isHero ? [768, 1200, 1600] : [480, 768, 1000];
+const sizes = isHero
+  ? '(min-width: 1024px) 1024px, 100vw'
+  : '(min-width: 768px) 50vw, 100vw';
+---
+
+<a
+  href={item.href}
+  class="group relative block overflow-hidden bg-surface focus-visible:outline-none"
+>
+  <Image
+    src={item.landscapeImage}
+    alt={item.landscapeImageAlt}
+    width={width}
+    height={Math.round(width * (isHero ? 9 / 21 : 3 / 4))}
+    widths={widths}
+    sizes={sizes}
+    class:list={[
+      'w-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.03] group-focus-visible:scale-[1.03]',
+      isHero ? 'aspect-[3/2] sm:aspect-[21/9]' : 'aspect-video sm:aspect-[4/3]',
+    ]}
+  />
+
+  <div
+    class="absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-bg/85 via-bg/20 to-transparent p-5 sm:p-6"
+  >
+    <p class="eyebrow mb-1">{item.typeLabel}</p>
+    <h2
+      class:list={[
+        'font-medium leading-tight underline-offset-4 group-hover:underline group-focus-visible:underline',
+        isHero ? 'text-2xl sm:text-4xl' : 'text-lg sm:text-xl',
+      ]}
+    >
+      {item.title}
+    </h2>
+  </div>
+</a>
