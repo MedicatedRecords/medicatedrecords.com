@@ -2,8 +2,8 @@
 title: "04 | Medicated Radio"
 date: 2025-10-02
 artists:
-  - artist-one
-  - artist-two
+  - corywithout
+  - jozeppi
 squareImage: ./cover.jpg
 squareImageAlt: Placeholder cover art for Medicated Radio episode 4.
 landscapeImage: ./cover.jpg

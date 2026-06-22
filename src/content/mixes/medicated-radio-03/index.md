@@ -2,8 +2,8 @@
 title: "03 | Medicated Radio"
 date: 2025-08-27
 artists:
-  - artist-one
-  - artist-two
+  - corywithout
+  - jozeppi
 squareImage: ./cover.jpg
 squareImageAlt: Placeholder cover art for Medicated Radio episode 3.
 landscapeImage: ./cover.jpg

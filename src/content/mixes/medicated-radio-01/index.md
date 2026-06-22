@@ -2,8 +2,8 @@
 title: "01 | Medicated Radio"
 date: 2025-06-11
 artists:
-  - artist-one
-  - artist-two
+  - corywithout
+  - jozeppi
 squareImage: ./cover.jpg
 squareImageAlt: Placeholder cover art for Medicated Radio episode 1.
 landscapeImage: ./cover.jpg

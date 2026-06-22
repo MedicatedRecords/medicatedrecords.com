@@ -2,8 +2,8 @@
 title: "07 | Medicated Radio"
 date: 2026-06-17
 artists:
-  - artist-one
-  - artist-two
+  - corywithout
+  - jozeppi
 squareImage: ./cover.jpg
 squareImageAlt: Placeholder cover art for Medicated Radio episode 7.
 landscapeImage: ./cover.jpg

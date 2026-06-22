@@ -20,7 +20,7 @@ export const homepage: {
 } = {
   hero: { collection: 'mixes', slug: 'medicated-radio-07' },
   subBanners: [
-    { collection: 'releases', slug: 'first-release' },
-    { collection: 'artists', slug: 'artist-one' },
+    { collection: 'releases', slug: 'practice' },
+    { collection: 'artists', slug: 'corywithout' },
   ],
 };

@@ -81,7 +81,7 @@ PRs → preview deploys). No manual deploy step.
 ```
 
 > Content images are **co-located** with their entry (e.g.
-> `src/content/releases/first-release/cover.jpg`) and referenced with the
+> `src/content/releases/practice/cover.jpg`) and referenced with the
 > `image()` schema helper so Astro optimizes them.
 
 ## Content model

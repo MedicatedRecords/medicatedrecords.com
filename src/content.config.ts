@@ -17,12 +17,14 @@ const sharedFields = (image: SchemaContext['image']) => ({
 
 const links = z
   .object({
-    soundcloud: z.url().optional(),
+	website: z.url().optional(),
     instagram: z.url().optional(),
     bandcamp: z.url().optional(),
+    soundcloud: z.url().optional(),
     spotify: z.url().optional(),
     appleMusic: z.url().optional(),
-    website: z.url().optional(),
+	youtube: z.url().optional(),
+	twitch: z.url().optional(),
   })
   .partial()
   .default({});
